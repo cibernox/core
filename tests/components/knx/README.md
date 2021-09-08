@@ -1,31 +1,7 @@
 # Testing the KNX integration
 
 A KNXTestKit instance can be requested from a fixture. It provides convenience methods
-to test outgoing KNX telegrams and inject incoming telegrams.
-To test something add a test function requesting the `hass` and `knx` fixture and
-set up the KNX integration by passing a KNX config dict to `knx.setup_integration`.
-
-```python
-async def test_something(hass, knx):
-    await knx.setup_integration({
-            "switch": {
-                "name": "test_switch",
-                "address": "1/2/3",
-            }
-        }
-    )
-```
-
-## Asserting outgoing telegrams
-
-All outgoing telegrams are pushed to an assertion queue. Assert them in order they were sent.
-
-- `knx.assert_no_telegram`
-  Asserts that no telegram was sent (assertion queue is empty).
-- `knx.assert_telegram_count(count: int)`
-  Asserts that `count` telegrams were sent.
-- `knx.assert_read(group_address: str)`
-  Asserts that a GroupValueRead telegram was sent to `group_address`.
+am was sent to `group_address`.
   The telegram will be removed from the assertion queue.
 - `knx.assert_response(group_address: str, payload: int | tuple[int, ...])`
   Asserts that a GroupValueResponse telegram with `payload` was sent to `group_address`.
