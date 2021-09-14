@@ -1,7 +1,6 @@
 """Common methods used across tests for Poolstation."""
 from __future__ import annotations
 
-import logging
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from homeassistant.components.poolstation.const import DOMAIN, TOKEN
@@ -9,8 +8,6 @@ from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 
 from tests.common import MockConfigEntry
-
-_LOGGER = logging.getLogger(__name__)
 
 
 def mock_config_entry(uniqe_id: str, entry_id: str = "an_entry_id") -> MockConfigEntry:
@@ -49,12 +46,17 @@ def mock_pool(
     pool_mock.sync_info = AsyncMock()
 
     async def set_target_ph(val):
-        _LOGGER.info(f"########mock set_target_ph is called with val: {val}")
         pool_mock.target_ph = val
-        _LOGGER.info(f"########pool.target_ph is: {pool_mock.target_ph}")
+        return val
+
+    async def set_target_percentage_electrolysis(val):
+        pool_mock.target_percentage_electrolysis = val
         return val
 
     pool_mock.set_target_ph = AsyncMock(side_effect=set_target_ph)
+    pool_mock.set_target_percentage_electrolysis = AsyncMock(
+        side_effect=set_target_percentage_electrolysis
+    )
     return pool_mock
 
 

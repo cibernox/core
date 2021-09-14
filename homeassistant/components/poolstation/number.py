@@ -1,8 +1,6 @@
 """Support for Poolstation numbers."""
 from __future__ import annotations
 
-import logging
-
 from pypoolstation import Pool
 
 from homeassistant.components.number import NumberEntity
@@ -14,8 +12,6 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from . import PoolstationDataUpdateCoordinator
 from .const import COORDINATORS, DEVICES, DOMAIN
 from .entity import PoolEntity
-
-_LOGGER = logging.getLogger(__name__)
 
 MIN_PH = 6.0
 MAX_PH = 8.0
@@ -58,15 +54,12 @@ class PoolTargetPh(PoolEntity, NumberEntity):
     @property
     def value(self) -> float:
         """Return the target PH."""
-        _LOGGER.info(f"########reading the PH value!!!!!: value{self._pool.target_ph}")
         return self._pool.target_ph
 
     async def async_set_value(self, value: float) -> None:
         """Set the target PH."""
-        _LOGGER.info(f"########async_set_value!!!: new val is {value}")
-        _LOGGER.info(f"########async_set_value _pool is!!!: {self._pool}")
-        await self._pool.set_target_ph(value)
-        _LOGGER.info("########async_set_value _call to library has ended")
+        self._attr_value = await self._pool.set_target_ph(value)
+        self.async_write_ha_state()
 
 
 class PoolTargetElectrolysisProduction(PoolEntity, NumberEntity):
@@ -90,4 +83,7 @@ class PoolTargetElectrolysisProduction(PoolEntity, NumberEntity):
 
     async def async_set_value(self, value: float) -> None:
         """Set the target electrolysis production."""
-        await self._pool.set_target_percentage_electrolysis(int(value))
+        self._attr_value = await self._pool.set_target_percentage_electrolysis(
+            int(value)
+        )
+        self.async_write_ha_state()
