@@ -43,16 +43,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             raise ConfigEntryAuthFailed from err
         except aiohttp.ClientResponseError:
             raise ConfigEntryAuthFailed from err
-        else:
-            hass.config_entries.async_update_entry(
-                entry,
-                data={
-                    CONF_TOKEN: token,
-                    CONF_EMAIL: entry.data[CONF_EMAIL],
-                    CONF_PASSWORD: entry.data[CONF_PASSWORD],
-                },
-            )
-            pools = await Pool.get_all_pools(session, account=account)
+
+        hass.config_entries.async_update_entry(
+            entry,
+            data={
+                CONF_TOKEN: token,
+                CONF_EMAIL: entry.data[CONF_EMAIL],
+                CONF_PASSWORD: entry.data[CONF_PASSWORD],
+            },
+        )
+        pools = await Pool.get_all_pools(session, account=account)
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = {
         COORDINATORS: {},
@@ -67,7 +67,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN][entry.entry_id][DEVICES][pool_id] = pool
         hass.data[DOMAIN][entry.entry_id][COORDINATORS][pool_id] = coordinator
 
-    hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
 
