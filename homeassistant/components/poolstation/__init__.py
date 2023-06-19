@@ -86,7 +86,7 @@ class PoolstationDataUpdateCoordinator(DataUpdateCoordinator):
 
     def __init__(self, hass: HomeAssistant, pool: Pool) -> None:
         """Initialize global Poolstation data updater."""
-        self._device = pool
+        self.pool = pool
         super().__init__(
             hass,
             _LOGGER,
@@ -97,6 +97,6 @@ class PoolstationDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> None:
         """Fetch data from poolstation.net."""
         try:
-            await self._device.sync_info()
+            await self.pool.sync_info()
         except AuthenticationException as err:
             raise ConfigEntryAuthFailed from err

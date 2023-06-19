@@ -3,12 +3,8 @@
   "name": "Poolstation",
   "config_flow": true,
   "documentation": "https://www.home-assistant.io/integrations/poolstation",
-  "requirements": [
-    "pypoolstation==0.4.8"
-  ],
-  "codeowners": [
-    "@cibernox"
-  ],
+  "requirements": ["pypoolstation==0.5.2"],
+  "codeowners": ["@cibernox"],
   "quality_scale": "silver",
   "iot_class": "cloud_polling"
 }
