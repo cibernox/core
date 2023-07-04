@@ -27,11 +27,13 @@ class PoolstationentityDescriptionMixin:
     is_on_fn: Callable[[Pool], bool]
     has_fn: Callable[[Pool], bool]
 
+
 @dataclass
 class PoolstationBinarySensorEntityDescription(
     BinarySensorEntityDescription, PoolstationentityDescriptionMixin
 ):
     """Class describing Poolstation binary sensor entities."""
+
 
 ENTITY_DESCRIPTIONS = (
     PoolstationBinarySensorEntityDescription(
@@ -85,7 +87,6 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-
 class PoolBinarySensorEntity(PoolEntity, BinarySensorEntity):
     """Defines a Poolstation binary sensor entity."""
 
@@ -97,10 +98,9 @@ class PoolBinarySensorEntity(PoolEntity, BinarySensorEntity):
         coordinator: PoolstationDataUpdateCoordinator,
         description: PoolstationBinarySensorEntityDescription,
     ) -> None:
-        """Initialize the pool binary sensor"""
+        """Initialize the pool binary sensor."""
         super().__init__(pool, coordinator, " " + description.name)
         self.entity_description = description
-
 
     @property
     def is_on(self) -> bool:
