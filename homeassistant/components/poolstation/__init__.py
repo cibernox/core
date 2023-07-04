@@ -15,7 +15,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import COORDINATORS, DEVICES, DOMAIN
 from .util import create_account
 
-PLATFORMS = ["sensor", "number", "switch"]
+PLATFORMS = ["sensor", "number", "switch", "binary_sensor"]
 
 _LOGGER = logging.getLogger(__name__)
 
