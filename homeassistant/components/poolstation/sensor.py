@@ -42,7 +42,7 @@ ENTITY_DESCRIPTIONS = (
     PoolstationSensorEntityDescription(
         key="pH",
         name="pH",
-        icon="mdi:ph",
+        device_class=SensorDeviceClass.PH,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda pool: pool.current_ph,
         has_fn=lambda pool: pool.current_ph is not None,
@@ -109,7 +109,7 @@ class PoolSensorEntity(PoolEntity, SensorEntity):
         description: PoolstationSensorEntityDescription,
     ) -> None:
         """Initialize the pool's target PH."""
-        super().__init__(pool, coordinator, " " + description.name)
+        super().__init__(pool, coordinator, " #{description.name}")
         self.entity_description = description
 
     @property
